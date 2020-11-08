@@ -1,5 +1,5 @@
-var AC = {};
-AC.STACK = [];
+Game.AutoClicker = {};
+Game.AutoClicker.STACK = [];
 Game.ClickCookie = function (e, amount) {
   var now = Date.now();
   if (e) e.preventDefault();
@@ -23,13 +23,14 @@ Game.ClickCookie = function (e, amount) {
   Game.lastClick = now;
   Game.Click = 0;
 };
-AC.start = function start() {
+Game.AutoClicker.start = function () {
   var obj = arguments[0] || {};
   var c_str = obj["clicksAtOnce"] || "1000";
   var d_str = obj["delay"] || "10";
   var i_str = obj["iterations"] || "100";
   var clicksAtOnce = 1000;
   var delay = 10;
+  // 並列度
   var iterations = 100;
 
   var buf = null;
@@ -50,16 +51,15 @@ AC.start = function start() {
     }
   };
   for (var i = 0; i < iterations; i = (i + 1) | 0) {
-    AC.STACK.push(setInterval(intoTheAbyss, delay));
+    Game.AutoClicker.STACK.push(setInterval(intoTheAbyss, delay));
   }
 };
-AC.stop = function stop() {
+Game.AutoClicker.stop = function () {
   console.log("[AutoClicker] stop");
-  while (AC.STACK.length > 0) {
-    clearInterval(AC.STACK.pop());
+  while (Game.AutoClicker.STACK.length > 0) {
+    clearInterval(Game.AutoClicker.STACK.pop());
   }
 };
-Game.lastClick = 0;
 setInterval(function () {
   Game.shimmers.forEach(function (shimmer) {
     if (shimmer.type == "golden" || shimmer.type == "reindeer") {
@@ -69,4 +69,3 @@ setInterval(function () {
     }
   })
 }, 500);
-
